@@ -31,16 +31,16 @@ std::vector<std::string> Autocomplete::getSuggestions(std::string partialWord) {
         if (!currentNode) return {};
     }
     std::vector<std::string> result;
-    depthFirstSearch(currentNode, result);
+    traverseTrie(currentNode, result);
     return result;
 }
 
-void Autocomplete::depthFirstSearch(TrieNode* currentNode, std::vector<std::string>& result) {
+void Autocomplete::traverseTrie(TrieNode* currentNode, std::vector<std::string>& result) {
     if (!currentNode) return;
     for (const std::string& word : currentNode->wordList) {
         result.push_back(word);
     }
     for (int i = 0; i < 26; i++) {
-        depthFirstSearch(currentNode->childNodes[i], result);
+        traverseTrie(currentNode->childNodes[i], result);
     }
 }
