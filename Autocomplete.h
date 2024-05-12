@@ -1,24 +1,19 @@
-#ifndef TRIE_H
-#define TRIE_H
+#ifndef AUTOCOMPLETE_H
+#define AUTOCOMPLETE_H
 
-#include <vector>
+#include "Trie.h"
 #include <string>
+#include <vector>
 
-struct TrieNode {
-    TrieNode* children[26];
-    bool isEndOfWord;
-};
-
-class Trie {
+class Autocomplete {
 public:
-    Trie();
-    ~Trie();
+    Autocomplete();
+    ~Autocomplete();
     void insert(const std::string &word);
     std::vector<std::string> getSuggestions(const std::string &partialWord);
 
 private:
-    TrieNode* root;
-    void getSuggestionsHelper(TrieNode* node, std::string current, std::vector<std::string>& suggestions);
+    Trie* trie;
 };
 
-#endif // TRIE_H
+#endif // AUTOCOMPLETE_H
