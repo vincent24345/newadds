@@ -8,12 +8,14 @@ class TrieNode {
 public:
     TrieNode* children[26]; 
     std::vector<std::string> words;
+
+    TrieNode();
 };
 
 class Autocomplete {
 private:
     TrieNode* root;
-    void dfs(TrieNode* node, std::vector<std::string>& res, const std::string& prefix);
+    void dfs(TrieNode* node, std::vector<std::string>& res);
 public:
     Autocomplete();
     ~Autocomplete();
@@ -22,4 +24,3 @@ public:
 };
 
 #endif
-
