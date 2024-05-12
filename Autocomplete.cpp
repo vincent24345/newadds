@@ -1,47 +1,46 @@
-
 #include "Autocomplete.h"
 
 TrieNode::TrieNode() {
     for (int i = 0; i < 26; ++i)
-        children[i] = nullptr;
+        childNodes[i] = nullptr;
 }
 
 Autocomplete::Autocomplete() {
-    root = new TrieNode();
+    rootNode = new TrieNode();
 }
 
 Autocomplete::~Autocomplete() {
-    delete root; 
+    delete rootNode; 
 }
 
 void Autocomplete::insert(std::string word) {
-    TrieNode* node = root;
-    for (char c : word) {
-        if (!node->children[c - 'a']) {
-            node->children[c - 'a'] = new TrieNode();
+    TrieNode* currentNode = rootNode;
+    for (char character : word) {
+        if (!currentNode->childNodes[character - 'a']) {
+            currentNode->childNodes[character - 'a'] = new TrieNode();
         }
-        node = node->children[c - 'a'];
+        currentNode = currentNode->childNodes[character - 'a'];
     }
-    node->words.push_back(word);
+    currentNode->wordList.push_back(word);
 }
 
 std::vector<std::string> Autocomplete::getSuggestions(std::string partialWord) {
-    TrieNode* node = root;
-    for (char c : partialWord) {
-        node = node->children[c - 'a'];
-        if (!node) return {};
+    TrieNode* currentNode = rootNode;
+    for (char character : partialWord) {
+        currentNode = currentNode->childNodes[character - 'a'];
+        if (!currentNode) return {};
     }
-    std::vector<std::string> res;
-    dfs(node, res);
-    return res;
+    std::vector<std::string> result;
+    depthFirstSearch(currentNode, result);
+    return result;
 }
 
-void Autocomplete::dfs(TrieNode* node, std::vector<std::string>& res) {
-    if (!node) return;
-    for (const std::string& word : node->words) {
-        res.push_back(word);
+void Autocomplete::depthFirstSearch(TrieNode* currentNode, std::vector<std::string>& result) {
+    if (!currentNode) return;
+    for (const std::string& word : currentNode->wordList) {
+        result.push_back(word);
     }
     for (int i = 0; i < 26; i++) {
-        dfs(node->children[i], res);
+        depthFirstSearch(currentNode->childNodes[i], result);
     }
 }
