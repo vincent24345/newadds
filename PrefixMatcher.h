@@ -6,7 +6,7 @@
 
 class TrieNode {
 public:
-    TrieNode* children[2]; // Assuming only binary IP addresses
+    TrieNode* children[2]; //binary IP addresses
     int routerNumber;
 };
 
