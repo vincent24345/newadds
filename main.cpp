@@ -1,16 +1,15 @@
-#include "Autocomplete.h"
+#include "Trie.h"
 #include <iostream>
-using namespace std;
-int main() {
-    Autocomplete autocomplete;
-    autocomplete.insert("win");
-    autocomplete.insert("winning");
-    autocomplete.insert("wine");
-    autocomplete.insert("winnable");
 
-    vector<string> suggestions = autocomplete.getSuggestions("wi");
-    for (string word : suggestions) {
-        cout << word << endl;
+int main() {
+    Trie trie;
+    trie.insert("bin");
+    trie.insert("ball");
+    trie.insert("ballet");
+
+    std::vector<std::string> suggestions = trie.getSuggestions("ba");
+    for (const std::string& word : suggestions) {
+        std::cout << word << std::endl;
     }
 
     return 0;
