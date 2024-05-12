@@ -15,7 +15,7 @@ public:
 class Autocomplete {
 private:
     TrieNode* root;
-    void Traverse_Trie(TrieNode* node, std::vector<std::string>& res);
+    void dfs(TrieNode* node, std::vector<std::string>& res);
 public:
     Autocomplete();
     ~Autocomplete();
