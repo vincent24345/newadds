@@ -5,7 +5,6 @@ PrefixMatcher::PrefixMatcher() {
 }
 
 PrefixMatcher::~PrefixMatcher() {
-    // TODO: Implement destructor to free memory
 }
 
 void PrefixMatcher::insert(const std::string& address, int routerNumber) {

@@ -10,7 +10,7 @@ Autocomplete::Autocomplete() {
 }
 
 Autocomplete::~Autocomplete() {
-    delete root; // Calls the destructor of TrieNode, which recursively deletes all children
+    delete root; 
 }
 
 void Autocomplete::insert(std::string word) {
