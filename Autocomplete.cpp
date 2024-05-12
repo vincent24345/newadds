@@ -5,7 +5,6 @@ Autocomplete::Autocomplete() {
 }
 
 Autocomplete::~Autocomplete() {
-    // TODO: Implement destructor to free memory
 }
 
 void Autocomplete::insert(std::string word) {
@@ -26,16 +25,18 @@ std::vector<std::string> Autocomplete::getSuggestions(std::string partialWord) {
         if (!node) return {};
     }
     std::vector<std::string> res;
-    dfs(node, res);
+    dfs(node, res, partialWord);
     return res;
 }
 
-void Autocomplete::dfs(TrieNode* node, std::vector<std::string>& res) {
+void Autocomplete::dfs(TrieNode* node, std::vector<std::string>& res, const std::string& prefix) {
     if (!node) return;
     for (std::string word : node->words) {
-        res.push_back(word);
+        if (word.substr(0, prefix.size()) == prefix) {
+            res.push_back(word);
+        }
     }
     for (int i = 0; i < 26; i++) {
-        dfs(node->children[i], res);
+        dfs(node->children[i], res, prefix);
     }
 }

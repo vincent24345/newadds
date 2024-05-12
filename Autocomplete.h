@@ -6,14 +6,14 @@
 
 class TrieNode {
 public:
-    TrieNode* children[26]; // Assuming only lowercase English letters
+    TrieNode* children[26]; 
     std::vector<std::string> words;
 };
 
 class Autocomplete {
 private:
     TrieNode* root;
-    void dfs(TrieNode* node, std::vector<std::string>& res);
+    void dfs(TrieNode* node, std::vector<std::string>& res, const std::string& prefix);
 public:
     Autocomplete();
     ~Autocomplete();
@@ -21,5 +21,5 @@ public:
     std::vector<std::string> getSuggestions(std::string partialWord);
 };
 
+#endif
 
-#endif // AUTOCOMPLETE_H
