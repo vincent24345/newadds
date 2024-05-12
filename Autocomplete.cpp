@@ -1,3 +1,4 @@
+
 #include "Autocomplete.h"
 
 TrieNode::TrieNode() {
@@ -35,12 +36,12 @@ std::vector<std::string> Autocomplete::getSuggestions(std::string partialWord) {
     return res;
 }
 
-void Autocomplete::Traverse_Trie(TrieNode* node, std::vector<std::string>& res) {
+void Autocomplete::dfs(TrieNode* node, std::vector<std::string>& res) {
     if (!node) return;
     for (const std::string& word : node->words) {
         res.push_back(word);
     }
     for (int i = 0; i < 26; i++) {
-        Traverse_Trie(node->children[i], res);
+        dfs(node->children[i], res);
     }
 }
