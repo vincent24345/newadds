@@ -1,22 +1,24 @@
-#include <vector>
+#ifndef PREFIXMATCHER_H
+#define PREFIXMATCHER_H
+
 #include <string>
-#include <unordered_map>
+#include <vector>
 
-using namespace std;
-
-struct TrieNode {
-    unordered_map<char, TrieNode*> children;
-    bool isEndOfWord;
+class TrieNode {
+public:
+    TrieNode* children[2]; // Assuming only binary IP addresses
+    int routerNumber;
 };
 
 class PrefixMatcher {
+private:
+    TrieNode* root;
+    int longestPrefixMatch(TrieNode* node, const std::string& networkAddress, int index);
 public:
     PrefixMatcher();
     ~PrefixMatcher();
-    void insert(string address, int routerNumber);
-    int longestMatch(string address);
-
-private:
-    TrieNode* root;
-    void dfs(TrieNode* node, string address, vector<string>& suggestions);
+    void insert(const std::string& address, int routerNumber);
+    int selectRouter(const std::string& networkAddress);
 };
+
+#endif // PREFIXMATCHER_H

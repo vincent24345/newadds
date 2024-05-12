@@ -1,50 +1,41 @@
-#include "Trie.h"
-#include <iostream>
+#include "Autocomplete.h"
 
-// Constructor
-Trie::Trie() {
+Autocomplete::Autocomplete() {
     root = new TrieNode();
 }
 
-// Destructor
-Trie::~Trie() {
-    delete root;
+Autocomplete::~Autocomplete() {
+    // TODO: Implement destructor to free memory
 }
 
-// Insert a word into the Trie
-void Trie::insert(const std::string &word) {
+void Autocomplete::insert(std::string word) {
     TrieNode* node = root;
     for (char c : word) {
-        if (node->children[c - 'a'] == nullptr) {
+        if (!node->children[c - 'a']) {
             node->children[c - 'a'] = new TrieNode();
         }
         node = node->children[c - 'a'];
+        node->words.push_back(word);
     }
-    node->isEndOfWord = true;
 }
 
-// Get suggestions that start with a partial word
-std::vector<std::string> Trie::getSuggestions(const std::string &partialWord) {
-    std::vector<std::string> suggestions;
+std::vector<std::string> Autocomplete::getSuggestions(std::string partialWord) {
     TrieNode* node = root;
     for (char c : partialWord) {
-        if (node->children[c - 'a'] == nullptr) {
-            return suggestions;
-        }
         node = node->children[c - 'a'];
+        if (!node) return {};
     }
-    getSuggestionsHelper(node, partialWord, suggestions);
-    return suggestions;
+    std::vector<std::string> res;
+    dfs(node, res);
+    return res;
 }
 
-// Helper function to get suggestions
-void Trie::getSuggestionsHelper(TrieNode* node, std::string current, std::vector<std::string>& suggestions) {
-    if (node->isEndOfWord) {
-        suggestions.push_back(current);
+void Autocomplete::dfs(TrieNode* node, std::vector<std::string>& res) {
+    if (!node) return;
+    for (std::string word : node->words) {
+        res.push_back(word);
     }
     for (int i = 0; i < 26; i++) {
-        if (node->children[i] != nullptr) {
-            getSuggestionsHelper(node->children[i], current + (char)(i + 'a'), suggestions);
-        }
+        dfs(node->children[i], res);
     }
 }

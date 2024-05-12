@@ -5,36 +5,32 @@ PrefixMatcher::PrefixMatcher() {
 }
 
 PrefixMatcher::~PrefixMatcher() {
-    // Implement destructor to free memory
+    // TODO: Implement destructor to free memory
 }
 
-void PrefixMatcher::insert(string address, int routerNumber) {
+void PrefixMatcher::insert(const std::string& address, int routerNumber) {
     TrieNode* node = root;
-    for (char ch : address) {
-        if (!node->children.count(ch)) {
-            node->children[ch] = new TrieNode();
+    for (char c : address) {
+        int index = c - '0';
+        if (!node->children[index]) {
+            node->children[index] = new TrieNode();
         }
-        node = node->children[ch];
+        node = node->children[index];
     }
-    node->isEndOfWord = true;
+    node->routerNumber = routerNumber;
 }
 
-int PrefixMatcher::longestMatch(string address) {
-    TrieNode* node = root;
-    for (char ch : address) {
-        if (!node->children.count(ch)) {
-            return -1;
-        }
-        node = node->children[ch];
-    }
-    // Implement logic to find longest match
+int PrefixMatcher::selectRouter(const std::string& networkAddress) {
+    return longestPrefixMatch(root, networkAddress, 0);
 }
 
-void PrefixMatcher::dfs(TrieNode* node, string address, vector<string>& suggestions) {
-    if (node->isEndOfWord) {
-        suggestions.push_back(address);
+int PrefixMatcher::longestPrefixMatch(TrieNode* node, const std::string& networkAddress, int index) {
+    if (!node) return -1;
+    if (index == networkAddress.size()) return node->routerNumber;
+    int childIndex = networkAddress[index] - '0';
+    if (node->children[childIndex]) {
+        int routerNumber = longestPrefixMatch(node->children[childIndex], networkAddress, index + 1);
+        if (routerNumber != -1) return routerNumber;
     }
-    for (auto it : node->children) {
-        dfs(it.second, address + it.first, suggestions);
-    }
+    return node->routerNumber;
 }
